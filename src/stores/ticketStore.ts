@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { addUser, verifyCredentials, findUserByEmail } from '@/lib/auth'
 
 export interface Ticket {
   id: string
@@ -172,22 +173,29 @@ export const useTicketStore = defineStore('ticket', () => {
     tickets.value = tickets.value.filter(ticket => ticket.id !== id)
   }
 
-  function login(email: string, _password: string, name: string) {
-    user.value = { 
-      id: Math.random().toString(36).substring(2, 11), 
-      email, 
-      name 
+  async function login(email: string, password: string) {
+    // verify credentials against localStorage users
+    const matched = await verifyCredentials(email, password)
+    if (!matched) {
+      return { success: false, message: 'Invalid email or password' }
     }
+    user.value = { id: matched.id, email: matched.email, name: matched.name }
     isAuthenticated.value = true
+    return { success: true }
   }
 
-  function signup(email: string, _password: string, name: string) {
-    user.value = { 
-      id: Math.random().toString(36).substring(2, 11), 
-      email, 
-      name 
+  async function signup(email: string, password: string, name: string) {
+    // ensure user doesn't already exist and create
+    try {
+      const existing = findUserByEmail(email)
+      if (existing) return { success: false, message: 'User already exists' }
+      const created = await addUser(email, password, name)
+      user.value = { id: created.id, email: created.email, name: created.name }
+      isAuthenticated.value = true
+      return { success: true }
+    } catch (e: any) {
+      return { success: false, message: e?.message || 'Signup failed' }
     }
-    isAuthenticated.value = true
   }
 
   function logout() {

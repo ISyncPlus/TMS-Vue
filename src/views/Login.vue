@@ -46,14 +46,17 @@ const validateForm = () => {
   return isValid;
 };
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (!validateForm()) {
     toast.error("Please fix the form errors");
     return;
   }
 
-  const userName = formData.value.email.split("@")[0] ?? "User";
-  ticketStore.login(formData.value.email, formData.value.password, userName);
+  const res = await ticketStore.login(formData.value.email, formData.value.password)
+  if (!res || !res.success) {
+    toast.error(res?.message || 'Invalid email or password')
+    return
+  }
   toast.success("Successfully logged in!");
   router.push("/dashboard");
 };

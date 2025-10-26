@@ -63,17 +63,21 @@ const validateForm = () => {
   return isValid;
 };
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (!validateForm()) {
     toast.error("Please fix the form errors");
     return;
   }
 
-  ticketStore.signup(
+  const res = await ticketStore.signup(
     formData.value.email,
     formData.value.password,
     formData.value.name
   );
+  if (!res || !res.success) {
+    toast.error(res?.message || 'Signup failed')
+    return
+  }
   toast.success("Account created successfully!");
   router.push("/dashboard");
 };
