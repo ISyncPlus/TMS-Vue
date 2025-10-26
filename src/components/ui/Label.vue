@@ -3,8 +3,8 @@ import { computed } from "vue";
 import { cn } from "@/lib/utils";
 
 interface LabelProps {
-  for?: string;
-  class?: string;
+  'for'?: string;
+  'class'?: string;
 }
 
 const props = defineProps<LabelProps>();
@@ -12,13 +12,14 @@ const props = defineProps<LabelProps>();
 const labelClass = computed(() =>
   cn(
     "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-    props.class
+    // use bracket access for reserved word property names
+    props['class']
   )
 );
 </script>
 
 <template>
-  <label :for="for" :class="labelClass">
+  <label :for="props['for']" :class="labelClass">
     <slot />
   </label>
 </template>

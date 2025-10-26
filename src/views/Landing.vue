@@ -3,6 +3,20 @@ import { RouterLink } from "vue-router";
 import Button from "@/components/ui/Button.vue";
 import Card from "@/components/ui/Card.vue";
 import { Zap, Shield, Users } from "lucide-vue-next";
+// animation configs typed as any to satisfy vue-tsc strict template checks
+const glowyEnter1: any = {
+  scale: [1, 1.1, 1],
+  opacity: [0.3, 0.4, 0.3],
+  transition: { duration: 8000, repeat: Infinity, ease: 'linear' },
+};
+const glowyEnter2: any = {
+  scale: [1, 1.15, 1],
+  opacity: [0.3, 0.5, 0.3],
+  transition: { duration: 10000, repeat: Infinity, ease: 'linear' },
+};
+const headingEnter: any = { y: 0, opacity: 1, transition: { duration: 800, delay: 200 } };
+const paraEnter: any = { y: 0, opacity: 1, transition: { duration: 800, delay: 400 } };
+const ctasEnter: any = { y: 0, opacity: 1, transition: { duration: 800, delay: 600 } };
 </script>
 
 <template>
@@ -19,22 +33,14 @@ import { Zap, Shield, Users } from "lucide-vue-next";
       <div
         v-motion
         :initial="{ scale: 1, opacity: 0.3 }"
-        :enter="{
-          scale: [1, 1.1, 1],
-          opacity: [0.3, 0.4, 0.3],
-          transition: { duration: 8000, repeat: Infinity, ease: 'linear' },
-        }"
+        :enter="glowyEnter1"
         class="glow-circle absolute -left-20 top-20 size-64 rounded-full bg-[#8176AF] lg:size-96"
         aria-hidden="true"
       ></div>
       <div
         v-motion
         :initial="{ scale: 1, opacity: 0.3 }"
-        :enter="{
-          scale: [1, 1.15, 1],
-          opacity: [0.3, 0.5, 0.3],
-          transition: { duration: 10000, repeat: Infinity, ease: 'linear' },
-        }"
+        :enter="glowyEnter2"
         class="glow-circle absolute -right-20 bottom-20 size-80 rounded-full bg-[#C0B7E8] lg:size-[32rem]"
         aria-hidden="true"
       ></div>
@@ -43,11 +49,7 @@ import { Zap, Shield, Users } from "lucide-vue-next";
         <h1
           v-motion
           :initial="{ y: -50, opacity: 0 }"
-          :enter="{
-            y: 0,
-            opacity: 1,
-            transition: { duration: 800, delay: 200 },
-          }"
+          :enter="headingEnter"
           class="mx-auto max-w-4xl bg-linear-to-r from-[#C0B7E8] to-[#8176AF] bg-clip-text text-transparent text-4xl lg:text-6xl"
         >
           Welcome to TicketWave
@@ -55,11 +57,7 @@ import { Zap, Shield, Users } from "lucide-vue-next";
         <p
           v-motion
           :initial="{ y: 30, opacity: 0 }"
-          :enter="{
-            y: 0,
-            opacity: 1,
-            transition: { duration: 800, delay: 400 },
-          }"
+          :enter="paraEnter"
           class="mx-auto mt-6 max-w-2xl text-[#B1B1B1] text-lg lg:text-xl"
         >
           Streamline your support workflow with our powerful, intuitive ticket
@@ -69,11 +67,7 @@ import { Zap, Shield, Users } from "lucide-vue-next";
         <div
           v-motion
           :initial="{ y: 30, opacity: 0 }"
-          :enter="{
-            y: 0,
-            opacity: 1,
-            transition: { duration: 800, delay: 600 },
-          }"
+          :enter="ctasEnter"
           class="mt-10 flex flex-col flex-wrap justify-center gap-4 sm:flex-row"
         >
           <RouterLink to="/signup">

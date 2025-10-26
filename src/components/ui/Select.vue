@@ -17,11 +17,6 @@ interface SelectProps {
   class?: string;
 }
 
-interface SelectOption {
-  value: string;
-  label: string;
-}
-
 const props = withDefaults(defineProps<SelectProps>(), {
   modelValue: "",
   placeholder: "Select...",
